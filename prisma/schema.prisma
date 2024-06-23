@@ -21,7 +21,7 @@ model Repository {
   name                String
   description         String?
   url                 String
-  mainLanguage        String
+  mainLanguage        String?
   repositoryCreatedAt DateTime
 }
 

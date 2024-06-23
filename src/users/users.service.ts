@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom, map } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -17,7 +17,6 @@ export class UsersService {
       .get(url)
       .pipe(map((response: AxiosResponse) => response.data));
     const repos = await lastValueFrom(result);
-    // console.log('result: ', result);
 
     if (repos.length > 0) {
       const userRecord = await this.prisma.user.upsert({
@@ -57,7 +56,33 @@ export class UsersService {
     }
   }
 
-  // async findReposByUserName(userName: string) {
-  //   return `This action returns all users`;
-  // }
+  async findReposByUserName(userName: string, searchText?: string) {
+    const userRepos = await this.prisma.user.findUnique({
+      where: { userLogin: userName },
+      include: {
+        repositories: {
+          where: searchText
+            ? {
+                OR: [
+                  { name: { contains: searchText, mode: 'insensitive' } },
+                  {
+                    description: { contains: searchText, mode: 'insensitive' },
+                  },
+                  { url: { contains: searchText, mode: 'insensitive' } },
+                  {
+                    mainLanguage: { contains: searchText, mode: 'insensitive' },
+                  },
+                ],
+              }
+            : {},
+        },
+      },
+    });
+
+    if (!userRepos) {
+      throw new NotFoundException(`User with username ${userName} not found`);
+    }
+
+    return userRepos.repositories;
+  }
 }
