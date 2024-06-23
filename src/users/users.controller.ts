@@ -4,7 +4,7 @@ import { UserRepositoryDTO } from './dto/userRepository.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post(':user/repos/import')
   importRepos(@Param('user') userName: string): Promise<UserRepositoryDTO[]> {
