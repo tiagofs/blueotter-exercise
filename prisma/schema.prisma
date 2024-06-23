@@ -15,18 +15,20 @@ datasource db {
 
 model Repository {
   id                  Int      @id @default(autoincrement())
-  user                User     @relation(fields: [userId], references: [id])
+  repositoryId        Int      @unique
   userId              Int
+  user                User     @relation(fields: [userId], references: [id])
   name                String
-  description         String
+  description         String?
   url                 String
   mainLanguage        String
   repositoryCreatedAt DateTime
 }
 
 model User {
-  id         Int @id @default(autoincrement())
-  userLogin String
-  userAvatar String
-  repositories   Repository[]
+  id           Int          @id @default(autoincrement())
+  userId       Int          @unique
+  userLogin    String       @unique
+  userAvatar   String
+  repositories Repository[]
 }
