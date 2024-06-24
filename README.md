@@ -3,6 +3,9 @@
 This is a Nest.js + PostgreSQL solution to interact with GitHub users' data.
 
 ## Running the app
+
+Rename .env.example to .env, and update the values as needed.
+
 Build and run the docker containers and the API will be available on port 3000.
 ```bash
 $ docker-compose up --build
