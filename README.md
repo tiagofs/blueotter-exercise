@@ -1,6 +1,6 @@
 ## Description
 
-This is a Nest.js = PostgreSQL solution to interact with GitHub users' data.
+This is a Nest.js + PostgreSQL solution to interact with GitHub users' data.
 
 ## Running the app
 Build and run the docker containers and the API will be available on port 3000.
